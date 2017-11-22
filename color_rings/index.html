@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>New Project</title>
+<script src="../p5.min.js"></script>
+<script>
+  let count = 0
+  let hue = 0
+
+  function setup() {
+    createCanvas(800, 600)
+    colorMode(HSB)
+  }
+
+  function draw() {
+    const bgColor = 32
+
+    // takes 64 frames to complete, but returns values up to 32
+    const point = count % 64 / 2
+    const circleSize = point ** 2
+
+    const point2 = count % 64 / 2 + 32
+    const circleSize2 = point2 ** 2
+
+    background(bgColor)
+    fill(hue * 20, 70, 80)
+    ellipse(width/2, height/2, circleSize)
+    fill(bgColor)
+    ellipse(width/2, height/2, circleSize - 50)
+
+    if (point === 0) hue++
+    count++
+  }
+</script>

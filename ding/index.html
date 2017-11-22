@@ -1,0 +1,128 @@
+<meta charset="utf-8">
+<title>Ding</title>
+<script src="../p5.min.js"></script>
+<script src="../addons/p5.sound.min.js"></script>
+<script src="../ramda.min.js"></script>
+<button onclick="start()">Start</button>
+<button onclick="stop()">Stop</button>
+<script>
+  let count = 0
+  let playing = true
+  const circleSize = 400
+  const ji = [] 
+  const ro = []
+  const lu = []
+  const tones = []
+
+  const speed = 10000
+
+  class Tone {
+    constructor(x, y, size, hue, freq) {
+      this.x = x
+      this.y = y
+      this.size = size
+      this.hue = hue
+      this.freq = freq
+      this.playing = false
+    }
+
+    play() {
+      this.playing = true
+      if (tones.length > 7) {
+        tones[0].stop()
+        tones.shift()
+      }
+      const tone = new p5.Oscillator()
+      tone.setType('sine')
+      tone.freq(this.freq)
+      tone.amp(0.3, 0.01)
+      tone.start()
+      tone.amp(0, 0.5)
+      tones.push(tone)
+    }
+
+    draw() {
+      fill(this.hue, 90, 90)
+
+      if (
+        (beater.x > this.x - 15 && beater.x < this.x + 15) &&
+        (beater.y > this.y - 10 && beater.y < this.y + 10)) {
+        ellipse(this.x, this.y, 50)
+        if (!this.playing) this.play()  
+      } else {
+        ellipse(this.x, this.y, this.size)
+        if (this.playing) this.playing = false
+      }
+    }
+  }
+
+  class Beater {
+    constructor() {
+      this.x = 600
+      this.y = 600
+      this.size = 20
+      this.hue = 96
+    }
+
+    draw() {
+      fill(this.hue, 100, 100)
+      ellipse(this.x, this.y, 20)
+    }
+  }
+  const beater = new Beater
+  
+  function start() { return playing = true }
+  function stop() { return playing = false }
+
+  function setup() {
+    colorMode(HSB)
+    createCanvas(1600, 900)
+    
+    for (let i = 0; i < 5; i++) {
+      const x = width / 2 + Math.cos(TWO_PI / 5 * i + PI / 2) * height / 3
+      const y = height / 2 + Math.sin(TWO_PI / 5 * i + PI / 2) * height / 3
+      ji.push(new Tone(x, y, 20, 30, 440))
+    }
+
+    for (let i = 0; i < 18; i++) {
+      const x = width / 2 + Math.cos(TWO_PI / 18 * i + PI / 3) * height / 3
+      const y = height / 2 + Math.sin(TWO_PI / 18 * i + PI / 3) * height / 3
+      ro.push(new Tone(x, y, 10, 170, 220))
+    }
+
+    for (let i = 0; i < 11; i++) {
+      const x = width / 2 + Math.cos(TWO_PI / 11 * i + PI / 5) * height / 3
+      const y = height / 2 + Math.sin(TWO_PI / 11 * i + PI / 5) * height / 3
+      lu.push(new Tone(x, y, 15, 300, 330))
+    }
+  }
+
+  function draw() {
+    background(0)
+
+    if (playing) {
+      beater.x = width / 2 + Math.cos(TWO_PI * millis() / speed) * height / 3
+      beater.y = height / 2 + Math.sin(TWO_PI * millis() / speed) * height / 3
+    } else {
+      beater.x = 100
+      beater.y = 100
+    }
+
+    beater.draw()
+
+    for (let i = 0; i < ji.length; i++) {
+      const tone = ji[i]
+      tone.draw()
+    }
+
+    for (let i = 0; i < ro.length; i++) {
+      const tone = ro[i]
+      tone.draw()
+    }
+
+    for (let i = 0; i < lu.length; i++) {
+      const tone = lu[i]
+      tone.draw()
+    }
+  }
+</script>

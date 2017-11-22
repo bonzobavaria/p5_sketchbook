@@ -1,0 +1,37 @@
+<meta charset="utf-8">
+<title>Poly Ding</title>
+<script src="../p5.min.js"></script>
+<script src="../addons/p5.sound.min.js"></script>
+<script src="../ramda.min.js"></script>
+<script src="./Node.js"></script>
+<script>
+  let count = 0
+  const nodes = []
+    
+  function setup() {
+    colorMode(HSB)
+    createCanvas(1920, 1080)
+    nodes.push(new Node(40, 90), new Node(15, 80))
+  }
+
+  function draw() {
+    background(55)
+
+    if (count % 100 === 0) {
+      nodes.push(new Node(random(50), random(360)))
+      
+      if (nodes.length > 60) nodes.shift()
+    }
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
+      
+      node.x += randomGaussian() * node.bias
+      node.y -= node.speed
+      node.drawNode()
+    }
+
+    count++
+  }
+</script>
+

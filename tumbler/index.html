@@ -1,0 +1,31 @@
+<meta charset="utf-8">
+<title>New Project</title>
+<script src="../p5.min.js"></script>
+<script src="../ramda.min.js"></script>
+<script>
+  let count = 0
+  const numOfSteps = 255
+  const circles = R.range(0,100)
+  const hueRange = 120 / circles.length
+  const hueOffset = 240
+
+  function setup() {
+    // width and height are probably reserved terms
+    const wideness = 1080
+    const highness = wideness / 16 * 9
+    colorMode(HSB)
+    createCanvas(wideness, highness)
+  }
+  function draw() {
+    const step = count % numOfSteps
+    background(16)
+
+    circles.map((c, i) => {
+      const yPos = (height / 2) + Math.sin(2 * PI * step / numOfSteps + c) * height / 3.5 
+      fill(i * hueRange + hueOffset, 40, 80)
+      ellipse(c * width / 100, yPos, 16)
+    })
+
+    count++
+  }
+</script>
