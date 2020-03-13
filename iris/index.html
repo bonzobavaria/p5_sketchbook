@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>Guassian</title>
+<script src="../p5.min.js"></script>
+<script>
+  let points = 80
+  let x = 0
+  let y = 0
+
+  function setup() {
+    createCanvas(900, 600)
+    background(0)
+    colorMode(HSB)
+  }
+
+  function draw() {
+    background(0)
+    translate(width / 2, height / 2);
+    x = lerp(x, mouseX, 0.01)
+    y = lerp(y, mouseY, 0.01)
+    for (let i = 0; i < points; i++) {
+      rotate(TWO_PI * i / points)
+      let length = randomGaussian(0, 100)
+      stroke(90, 20, 220)
+
+      line(x, y, length, x)
+    }
+  }
+</script>
+

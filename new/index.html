@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>New Project</title>
+<script src="../p5.min.js"></script>
+<script>
+  let count = 0
+  let n
+
+  function setup() {
+    createCanvas(710, 400)
+    background(0)
+    noStroke()
+  }
+
+  function draw() {
+    fill(0, 10)
+    rect(0, 0, width, height)
+
+    n = count % width
+
+
+    fill(200)
+    ellipse(n, height/2, 64, 64)
+
+    count++
+  }
+</script>
+

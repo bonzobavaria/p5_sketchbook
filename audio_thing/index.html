@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<title>New Project</title>
+<script src="../p5.min.js"></script>
+<script src="../addons/p5.sound.min.js"></script>
+<script>
+let osc, playing, freq, amp, synth, soundLoop;
+let noteIndex = 0;
+let noteArray = [64, 64, 67, 64];
+
+function setup() {
+  let cnv = createCanvas(600, 800);
+  cnv.mousePressed(playOscillator);
+  osc = new p5.Oscillator('sawtooth');
+  // It looks like p5.MonoSynth doesn't accept a configuration object like
+  // the one from Tone.js does. Is there a way to set the oscillator type for a
+  // p5.MonoSynth?
+  synth = new p5.MonoSynth({ oscillator: { type: 'square' }});
+
+  const intervalInSeconds = 0.5;
+  soundLoop = new p5.SoundLoop(onSoundLoop, intervalInSeconds);
+  soundLoop.start()
+}
+
+function onSoundLoop(timeFromNow) {
+  const note = midiToFreq(noteArray[noteIndex % noteArray.length])
+  synth.play(note, 0.5, timeFromNow)
+  noteIndex += 1;
+}
+
+function playOscillator() {
+  // starting an oscillator on a user gesture will enable audio
+  // in browsers that have a strict autoplay policy.
+  // See also: userStartAudio();
+  osc.start();
+  playing = true;
+}
+
+function mouseReleased() {
+  // ramp amplitude to 0 over 0.5 seconds
+  osc.amp(0, 0.5);
+  playing = false;
+}
+</script>
+
